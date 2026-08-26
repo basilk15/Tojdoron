@@ -1,0 +1,14 @@
+Use case: photorealistic-natural
+Asset set: original photo-led operational sequence for the TOJDORON About page
+
+Shared constraints: create original documentary-style logistics photography; use the supplied Wikimedia Commons references only for real-world scale, proportions, and workflow; do not copy their composition, people, products, logos, names, or text; no readable text, trademarks, watermarks, invented signage, cartoon/vector styling, or 3D-render appearance. Keep the images wide 16:9 with practical industrial detail, restrained forest-green accents, and enough calm space for HTML overlays.
+
+Hub: a modern cargo loading hub in Dushanbe with a covered warehouse dock, marked bays, white box truck, organized neutral pallets, one forklift, a few clean containers, and distant low mountain silhouettes. The warehouse and loading infrastructure are the main subject, weighted to the right with quiet space on the left.
+
+Road: a modern white long-haul tractor-trailer positioned at a professional freight loading bay, shown in a three-quarter rear-side view with a pallet jack or forklift nearby, covered dock doors, wrapped neutral pallets, and a subtle mountain/industrial horizon.
+
+Sea: a large modern container vessel being worked at a commercial terminal, with stacked containers, tall ship-to-shore gantry cranes, quay, waterline, and a grounded harbor background. Keep the vessel large and technically believable.
+
+Cargo: a modern green-and-black counterbalance forklift carrying a large securely wrapped freight pallet inside a clean high-ceiling cargo warehouse, with organized racking, marked floor lanes, and a loading bay or white truck in the distance. Keep the pallet visibly large.
+
+Air: a realistic white wide-body commercial freighter at an airport cargo terminal, seen from ground level in a three-quarter side view with clear fuselage, wing, engines, landing gear, open cargo door, mobile high-loader, and one visible unit load device/pallet. No airline identity or military markings.

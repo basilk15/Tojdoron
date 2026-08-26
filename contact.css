@@ -1,6 +1,6 @@
 /* Hallmark · macrostructure: Route Desk · tone: direct and human · anchor hue: forest green */
 /* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
-@import url("shared.css");
+@import url("shared.css?v=page-transition-speed-v7");
 
 .contact-hero {
   position: relative;
@@ -92,7 +92,7 @@
 .contact-main__grid {
   display: grid;
   grid-template-columns: minmax(18rem, 0.68fr) minmax(0, 1.32fr);
-  align-items: start;
+  align-items: stretch;
   gap: clamp(2rem, 6vw, 5rem);
 }
 
@@ -101,8 +101,8 @@
 }
 
 .office-card {
-  position: sticky;
-  top: 10rem;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius-md);
   padding: clamp(1.5rem, 4vw, 2.5rem);
   background: var(--color-paper-2);
@@ -152,9 +152,9 @@
 }
 
 .office-card__note {
-  margin-top: var(--space-2xl);
+  margin-top: auto;
+  padding-top: var(--space-2xl);
   border-top: var(--rule-medium) solid var(--color-accent);
-  padding-top: var(--space-lg);
 }
 
 .office-card__note h3 {
@@ -350,8 +350,10 @@
   min-height: 24rem;
   margin-inline: auto;
   overflow: hidden;
+  border: var(--rule-medium) solid var(--color-rule-strong);
   border-radius: var(--radius-sm);
   background: var(--color-paper-2);
+  box-shadow: var(--shadow-soft);
 }
 
 .location__map iframe {

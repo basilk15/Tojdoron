@@ -5,52 +5,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.querySelector("[data-atlas-status]");
   const action = document.querySelector("[data-atlas-action]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const content = {
-    road: {
-      status: "Road freight: truck loading",
-      action: "Truck departs on the selected road route"
-    },
-    sea: {
-      status: "Sea freight: container loading",
-      action: "Ship sails toward the destination port"
-    },
-    cargo: {
-      status: "Cargo shipping: pallet handling",
-      action: "Forklift moves the checked load to the bay"
-    },
-    air: {
-      status: "Air freight: aircraft loading",
-      action: "Aircraft departs with the urgent shipment"
-    }
+  const statusCopy = {
+    road: "Road freight",
+    sea: "Sea freight",
+    cargo: "Cargo handling",
+    air: "Air freight"
+  };
+  const actionCopy = {
+    road: "Scheduled cross-border delivery",
+    sea: "Containerized ocean transit",
+    cargo: "Warehouse consolidation and dispatch",
+    air: "Priority airfreight uplift"
   };
   let activeIndex = 0;
   let timer = null;
 
   const restartSceneAnimation = (scene) => {
     if (!scene || reduceMotion) return;
-    scene.querySelectorAll(".freight-load, .freight-vehicle, .freight-pallet").forEach((element) => {
-      element.getAnimations().forEach((animation) => {
-        animation.cancel();
-        animation.play();
-      });
+    scene.querySelector(".atlas-scene__photo")?.getAnimations().forEach((animation) => {
+      animation.cancel();
+      animation.play();
     });
   };
 
   const selectMode = (index) => {
     activeIndex = index;
     const selectedMode = controls[index]?.dataset.atlasControl || "road";
+    const selectedScene = scenes.find((scene) => scene.dataset.atlasScene === selectedMode);
+
     controls.forEach((control, controlIndex) => {
       const isActive = controlIndex === index;
       control.classList.toggle("is-active", isActive);
       control.setAttribute("aria-pressed", String(isActive));
     });
+
     scenes.forEach((scene) => {
-      const isActive = scene.dataset.atlasScene === selectedMode;
+      const isActive = scene === selectedScene;
       scene.classList.toggle("is-active", isActive);
       if (isActive) restartSceneAnimation(scene);
     });
-    if (status) status.textContent = content[selectedMode].status;
-    if (action) action.textContent = content[selectedMode].action;
+
+    if (status) status.textContent = window.TOJDORON_I18N?.t(statusCopy[selectedMode]) || statusCopy.road;
+    if (action) action.textContent = window.TOJDORON_I18N?.t(actionCopy[selectedMode]) || actionCopy.road;
   };
 
   const stopRotation = () => {
@@ -60,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const startRotation = () => {
     if (reduceMotion || timer || controls.length < 2) return;
-    timer = window.setInterval(() => selectMode((activeIndex + 1) % controls.length), 5200);
+    timer = window.setInterval(() => selectMode((activeIndex + 1) % controls.length), 8800);
   };
 
   controls.forEach((control, index) => {
@@ -70,6 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     control.addEventListener("focus", stopRotation);
   });
+
+  document.addEventListener("tojdoron:languagechange", () => selectMode(activeIndex));
 
   board?.addEventListener("pointerenter", stopRotation);
   board?.addEventListener("pointerleave", startRotation);

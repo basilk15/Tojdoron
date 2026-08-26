@@ -1,0 +1,19 @@
+{
+  "createdAt": "2026-08-26",
+  "generator": "OpenAI image generation",
+  "assets": [
+    "about-hub-tojdoron-v1.png",
+    "about-road-tojdoron-v1.png",
+    "about-sea-tojdoron-v1.png",
+    "about-cargo-tojdoron-v1.png",
+    "about-air-tojdoron-v1.png"
+  ],
+  "promptFile": "assets/prompts/about-route-atlas-tojdoron-v1.txt",
+  "references": [
+    "https://commons.wikimedia.org/wiki/File:Road_Train_unloading.jpg",
+    "https://commons.wikimedia.org/wiki/File:Yellow_Moon_container_ship_docked_in_Auckland_harbour.jpg",
+    "https://commons.wikimedia.org/wiki/File:200416-H-NI589-255.jpg",
+    "https://commons.wikimedia.org/wiki/File:Defense.gov_News_Photo_040814-F-7823A-066.jpg"
+  ],
+  "referenceUse": "Real-world workflow and scale references only; reference photos are not shipped with the website assets."
+}

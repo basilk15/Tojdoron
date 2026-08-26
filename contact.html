@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#135b3a" />
     <title>Contact TOJDORON — Request a Freight Quote</title>
     <link rel="icon" href="assets/tojdoron-logo-green-v2.png" type="image/png" />
-    <link rel="stylesheet" href="contact.css" />
-    <script src="shared.js" defer></script>
+    <link rel="stylesheet" href="contact.css?v=normal-scale" />
+    <script src="shared.js?v=page-transition-speed-v7" defer></script>
     <script src="contact.js" defer></script>
   </head>
   <body>
@@ -41,9 +41,8 @@
             <li><a class="nav-menu__link" href="index.html">Home</a></li>
             <li><a class="nav-menu__link" href="about.html">About us</a></li>
             <li><a class="nav-menu__link" href="services.html">Services</a></li>
-            <li><a class="nav-menu__link" href="contact.html" aria-current="page">Contact us</a></li>
+            <li><a class="nav-menu__link nav-menu__link--contact" href="contact.html" aria-current="page">Contact us</a></li>
           </ul>
-          <a class="button" href="#quote-form">Request a quote</a>
         </nav>
       </div>
     </header>
@@ -163,8 +162,11 @@
 
       <div class="container">
         <section class="cta-band" aria-labelledby="contact-cta-title" data-reveal>
-          <div><h2 id="contact-cta-title">Prefer to speak directly?</h2><p>Use either TOJDORON contact line and tell us about the shipment.</p></div>
-          <a class="button button--light" href="tel:+992978241717">Call +992 978 241717</a>
+          <div><h2 id="contact-cta-title">Prefer to speak directly?</h2><p>Choose either TOJDORON contact line and speak with our team about the shipment.</p></div>
+          <div class="cta-band__calls" role="group" aria-label="TOJDORON phone numbers">
+            <a class="button button--light" href="tel:+992978241717" aria-label="Call TOJDORON at +992 978 241717">Call +992 978 241717</a>
+            <a class="button button--light" href="tel:+992978231717" aria-label="Call TOJDORON at +992 978 231717">Call +992 978 231717</a>
+          </div>
         </section>
       </div>
     </main>
@@ -179,6 +181,14 @@
       <div class="container footer-bottom"><span>© <span data-year></span> TOJDORON. All rights reserved.</span><span>International transport company</span></div>
     </footer>
 
-    <a class="floating-call" href="tel:+992978241717" aria-label="Call TOJDORON"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.9Z" /></svg></a>
+    <div class="floating-call" data-call-menu>
+      <button class="floating-call__toggle" type="button" aria-expanded="false" aria-controls="floating-call-options" aria-label="Choose a TOJDORON phone number">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.9Z" /></svg>
+      </button>
+      <div class="floating-call__options" id="floating-call-options" role="group" aria-label="TOJDORON phone numbers">
+        <a href="tel:+992978241717" aria-label="Call TOJDORON at +992 978 241717">Call +992 978 241717</a>
+        <a href="tel:+992978231717" aria-label="Call TOJDORON at +992 978 231717">Call +992 978 231717</a>
+      </div>
+    </div>
   </body>
 </html>

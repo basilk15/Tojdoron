@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#135b3a" />
     <title>About TOJDORON — International Transport Company</title>
     <link rel="icon" href="assets/tojdoron-logo-green-v2.png" type="image/png" />
-    <link rel="stylesheet" href="about.css" />
-    <script src="shared.js" defer></script>
+    <link rel="stylesheet" href="about.css?v=normal-scale" />
+    <script src="shared.js?v=page-transition-speed-v7" defer></script>
     <script src="about.js" defer></script>
   </head>
   <body>
@@ -41,9 +41,8 @@
             <li><a class="nav-menu__link" href="index.html">Home</a></li>
             <li><a class="nav-menu__link" href="about.html" aria-current="page">About us</a></li>
             <li><a class="nav-menu__link" href="services.html">Services</a></li>
-            <li><a class="nav-menu__link" href="contact.html">Contact us</a></li>
+            <li><a class="nav-menu__link nav-menu__link--contact" href="contact.html">Contact us</a></li>
           </ul>
-          <a class="button" href="contact.html#quote-form">Request a quote</a>
         </nav>
       </div>
     </header>
@@ -84,7 +83,7 @@
               <div><h3>We plan</h3><p>Routes and transport modes are selected around the cargo, destination, timing, and budget.</p></div>
             </article>
             <article data-reveal>
-              <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 12h18" /><path d="m15 6 6 6-6 6" /><circle cx="6" cy="12" r="2" /></svg>
+              <svg class="icon coordination-section__arrow" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h15" /><path d="m15 6 6 6-6 6" /><circle class="coordination-section__arrow-dot" cx="5" cy="12" r="2.35" /></svg>
               <div><h3>We organize</h3><p>The moving parts of the shipment are coordinated into one practical delivery plan.</p></div>
             </article>
             <article data-reveal>
@@ -102,98 +101,37 @@
       <section class="route-atlas section--dark" aria-labelledby="atlas-title">
         <div class="container route-atlas__grid">
           <div class="route-atlas__copy" data-reveal>
-            <h2 id="atlas-title">Local reach. International thinking.</h2>
-            <p>Our Dushanbe office is the starting point for transport solutions that can combine routes, carriers, and modes across borders.</p>
+            <span class="route-atlas__kicker">International freight coordination</span>
+            <h2 id="atlas-title">Coordinated freight, from Dushanbe.</h2>
+            <p>We organize road, sea, cargo, and air freight around each shipment’s route, timing, and handling requirements.</p>
             <a class="button button--light" href="contact.html#location">Find our office</a>
           </div>
-          <div class="route-atlas__visual" aria-label="Interactive loading and departure sequence for road, sea, cargo, and air freight" data-reveal>
-            <div class="atlas-board__head">
-              <span>Load, then depart</span>
-              <strong class="atlas-board__status" data-atlas-status aria-live="polite">Road freight: truck loading</strong>
+          <div class="route-atlas__visual" aria-label="Interactive operational view of road, sea, cargo, and air freight" data-reveal>
+            <div class="atlas-stage">
+              <div class="atlas-scenes">
+                <figure class="atlas-scene is-active" data-atlas-scene="road" data-atlas-copy-action="Scheduled cross-border delivery">
+                  <img class="atlas-scene__photo" src="assets/about-road-tojdoron-v1.png" alt="Modern white tractor-trailer positioned at a freight loading dock" width="1672" height="941" fetchpriority="high" />
+                </figure>
+                <figure class="atlas-scene" data-atlas-scene="sea" data-atlas-copy-action="Containerized ocean transit">
+                  <img class="atlas-scene__photo" src="assets/about-sea-tojdoron-v1.png" alt="Large container vessel being worked by gantry cranes at a commercial port" width="1672" height="941" loading="lazy" />
+                </figure>
+                <figure class="atlas-scene" data-atlas-scene="cargo" data-atlas-copy-action="Warehouse consolidation and dispatch">
+                  <img class="atlas-scene__photo" src="assets/about-cargo-tojdoron-v1.png" alt="Forklift carrying a wrapped pallet inside a professional cargo warehouse" width="1672" height="941" loading="lazy" />
+                </figure>
+                <figure class="atlas-scene" data-atlas-scene="air" data-atlas-copy-action="Priority airfreight uplift">
+                  <img class="atlas-scene__photo" src="assets/about-air-tojdoron-v1.png" alt="Wide-body cargo aircraft receiving a wrapped pallet at an airport freight terminal" width="1672" height="941" loading="lazy" />
+                </figure>
+              </div>
             </div>
-            <svg viewBox="0 0 820 400" role="img" aria-labelledby="atlas-svg-title atlas-svg-desc">
-              <title id="atlas-svg-title">TOJDORON freight loading and departure sequence</title>
-              <desc id="atlas-svg-desc">Cargo is prepared at the Dushanbe hub, loaded onto the selected transport, and then departs by road, sea, cargo handling, or air.</desc>
-
-              <path class="freight-grid" d="M36 88h748M36 164h748M36 240h748M36 316h748M150 42v310M300 42v310M450 42v310M600 42v310" />
-              <path class="freight-ground" d="M32 316H788" />
-
-              <g class="freight-hub">
-                <path class="freight-hub__shell" d="M48 292V122l92-55 92 55v170M78 292V178h124v114M48 292h184" />
-                <path class="freight-hub__door" d="M101 292v-76h78v76M101 241h78M101 267h78" />
-                <g class="freight-hub__pallet" transform="translate(180 265)">
-                  <rect x="0" y="-31" width="43" height="31" rx="2" />
-                  <path d="M0-16h43M21.5-31V0M-4 4h51M3 4v8M39 4v8" />
-                </g>
-                <text x="48" y="344">01 · DUSHANBE LOADING HUB</text>
-              </g>
-
-              <g class="freight-scene is-active" data-atlas-scene="road">
-                <path class="freight-lane" d="M252 300H774" />
-                <g class="freight-load freight-load--road"><g transform="translate(218 247)"><rect width="36" height="34" rx="2" /><path d="M0 12h36M18 0v34" /></g></g>
-                <g class="freight-vehicle freight-vehicle--road">
-                  <g transform="translate(292 235)">
-                    <rect class="vehicle-body" width="126" height="55" rx="5" />
-                    <path class="vehicle-body" d="M126 18h42l24 24v13h-66z" />
-                    <path class="vehicle-window" d="M139 25h22l15 15h-37z" />
-                    <circle cx="30" cy="59" r="12" /><circle cx="156" cy="59" r="12" />
-                    <image href="assets/tojdoron-logo-green-v2.png" x="35" y="5" width="58" height="41" />
-                  </g>
-                </g>
-                <text class="freight-destination" x="565" y="122">LOAD → TRUCK DEPARTS</text>
-              </g>
-
-              <g class="freight-scene" data-atlas-scene="sea">
-                <path class="freight-water" d="M250 299c28-12 56 12 84 0s56 12 84 0 56 12 84 0 56 12 84 0 56 12 84 0 56 12 84 0" />
-                <path class="freight-crane" d="M286 92v142M286 92h124M360 92l-74 52M392 92v94" />
-                <g class="freight-load freight-load--sea"><g transform="translate(374 168)"><rect width="38" height="32" rx="2" /><path d="M0 11h38M19 0v32" /></g></g>
-                <g class="freight-vehicle freight-vehicle--sea">
-                  <g transform="translate(294 228)">
-                    <path class="vehicle-body" d="M0 45h196l-25 53H30z" />
-                    <rect class="vehicle-body" x="48" y="12" width="94" height="34" />
-                    <path class="vehicle-detail" d="M48 29h94M79 12v34M111 12v34" />
-                    <image href="assets/tojdoron-logo-green-v2.png" x="79" y="44" width="62" height="44" />
-                  </g>
-                </g>
-                <text class="freight-destination" x="555" y="122">LOAD → SHIP SAILS</text>
-              </g>
-
-              <g class="freight-scene" data-atlas-scene="cargo">
-                <path class="freight-lane" d="M252 300H650" />
-                <g class="freight-vehicle freight-vehicle--cargo">
-                  <g transform="translate(274 244)">
-                    <path class="vehicle-body" d="M0 8h62v45H0zM62 22h28v31H62z" />
-                    <path class="vehicle-detail" d="M72 22V0h9v22M90 50h45M132 28v30" />
-                    <circle cx="18" cy="58" r="11" /><circle cx="72" cy="58" r="11" />
-                    <image href="assets/tojdoron-logo-green-v2.png" x="10" y="11" width="39" height="28" />
-                    <g class="freight-pallet"><g transform="translate(102 19)"><rect width="42" height="31" rx="2" /><path d="M0 11h42M21 0v31" /></g></g>
-                  </g>
-                </g>
-                <text class="freight-destination" x="535" y="122">CHECK → MOVE TO LOADING BAY</text>
-              </g>
-
-              <g class="freight-scene" data-atlas-scene="air">
-                <path class="freight-runway" d="M250 304H780M300 304v-10M380 304v-10M460 304v-10M540 304v-10M620 304v-10M700 304v-10" />
-                <g class="freight-load freight-load--air"><g transform="translate(222 257)"><rect width="40" height="32" rx="2" /><path d="M0 11h40M20 0v32" /></g></g>
-                <g class="freight-vehicle freight-vehicle--air">
-                  <g transform="translate(292 211)">
-                    <path class="vehicle-body" d="M0 54 91 39l38-38 18 2-19 38 76 17-8 15-76-8-38 47-15-3 17-47-84 8z" />
-                    <path class="vehicle-window" d="M106 38h25M139 42h18" />
-                    <image href="assets/tojdoron-logo-green-v2.png" x="88" y="41" width="48" height="34" />
-                  </g>
-                </g>
-                <text class="freight-destination" x="555" y="122">LOAD → AIRCRAFT DEPARTS</text>
-              </g>
-            </svg>
-            <div class="freight-sequence" aria-hidden="true">
-              <span><b>01</b> Prepare and load at the hub</span>
-              <i></i>
-              <span><b>02</b> <strong data-atlas-action>Truck departs on the selected road route</strong></span>
+            <div class="atlas-mode-context">
+              <strong data-atlas-status aria-live="polite">Road freight</strong>
+              <span aria-hidden="true">·</span>
+              <span data-atlas-action>Scheduled cross-border delivery</span>
             </div>
             <div class="atlas-mode-switch" role="group" aria-label="Highlight a freight service">
               <button type="button" class="is-active" data-atlas-control="road" aria-pressed="true">Road freight</button>
               <button type="button" data-atlas-control="sea" aria-pressed="false">Sea freight</button>
-              <button type="button" data-atlas-control="cargo" aria-pressed="false">Cargo shipping</button>
+              <button type="button" data-atlas-control="cargo" aria-pressed="false">Cargo handling</button>
               <button type="button" data-atlas-control="air" aria-pressed="false">Air freight</button>
             </div>
           </div>
@@ -233,6 +171,14 @@
       <div class="container footer-bottom"><span>© <span data-year></span> TOJDORON. All rights reserved.</span><span>International transport company</span></div>
     </footer>
 
-    <a class="floating-call" href="tel:+992978241717" aria-label="Call TOJDORON"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.9Z" /></svg></a>
+    <div class="floating-call" data-call-menu>
+      <button class="floating-call__toggle" type="button" aria-expanded="false" aria-controls="floating-call-options" aria-label="Choose a TOJDORON phone number">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.08 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.9Z" /></svg>
+      </button>
+      <div class="floating-call__options" id="floating-call-options" role="group" aria-label="TOJDORON phone numbers">
+        <a href="tel:+992978241717" aria-label="Call TOJDORON at +992 978 241717">Call +992 978 241717</a>
+        <a href="tel:+992978231717" aria-label="Call TOJDORON at +992 978 231717">Call +992 978 231717</a>
+      </div>
+    </div>
   </body>
 </html>
