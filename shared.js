@@ -1,3 +1,52 @@
+// Keep the visitor's effective page scale consistent across static-page navigation.
+const pageScaleStorageKey = "tojdoron-page-scale";
+const getNativePageScale = () => {
+  const scale = Number(window.devicePixelRatio);
+  return Number.isFinite(scale) && scale > 0 ? scale : 1;
+};
+const readSavedPageScale = () => {
+  try {
+    const scale = Number.parseFloat(window.localStorage.getItem(pageScaleStorageKey) || "");
+    return Number.isFinite(scale) && scale >= 0.5 && scale <= 5 ? scale : null;
+  } catch {
+    return null;
+  }
+};
+const savePageScale = (scale) => {
+  try { window.localStorage.setItem(pageScaleStorageKey, String(scale)); } catch {}
+};
+
+let nativePageScale = getNativePageScale();
+let emulatedPageScale = 1;
+const savedPageScale = readSavedPageScale();
+
+if (savedPageScale === null) {
+  savePageScale(nativePageScale);
+} else {
+  const scaleRatio = savedPageScale / nativePageScale;
+  if (Math.abs(scaleRatio - 1) > 0.01 && scaleRatio >= 0.5 && scaleRatio <= 2.5) {
+    document.documentElement.style.zoom = String(scaleRatio);
+    emulatedPageScale = scaleRatio;
+  }
+}
+
+const syncPageScale = () => {
+  const nextScale = getNativePageScale();
+  if (Math.abs(nextScale - nativePageScale) < 0.01) return;
+  nativePageScale = nextScale;
+  savePageScale(nativePageScale);
+  if (emulatedPageScale !== 1) {
+    document.documentElement.style.removeProperty("zoom");
+    emulatedPageScale = 1;
+  }
+};
+
+window.addEventListener("resize", syncPageScale, { passive: true });
+window.visualViewport?.addEventListener("resize", syncPageScale, { passive: true });
+window.addEventListener("pagehide", () => {
+  if (emulatedPageScale === 1) savePageScale(nativePageScale);
+});
+
 document.documentElement.classList.add("js");
 
 const languageStorageKey = "tojdoron-language";
@@ -12,7 +61,7 @@ const russianTranslations = {
   "Open navigation": "Открыть навигацию",
   "Close navigation": "Закрыть навигацию",
   "Primary navigation": "Основная навигация",
-  "Skip to content": "Перейти к содержимому",
+  "Skip to content": "Перейти к основному содержимому",
   "Home": "Главная",
   "About us": "О компании",
   "Services": "Услуги",
@@ -24,9 +73,9 @@ const russianTranslations = {
   "Cargo shipping": "Грузовые перевозки",
   "Air freight": "Авиаперевозки",
   "Freight, without borders.": "Перевозки без границ.",
-  "TOJDORON organizes the right route, the right transport, and clear support from pickup to final destination.": "TOJDORON организует оптимальный маршрут и перевозку, обеспечивая понятную поддержку от забора груза до конечного пункта.",
+  "TOJDORON organizes the right route, the right transport, and clear support from pickup to final destination.": "TOJDORON организует подходящий маршрут и вид транспорта, обеспечивая понятное сопровождение от забора груза до конечного пункта назначения.",
   "Plan your shipment": "Спланировать перевозку",
-  "Explore services": "Все услуги",
+  "Explore services": "Посмотреть услуги",
   "TOJDORON transport modes": "Виды перевозок TOJDORON",
   "Road freight for flexible international routes": "Автоперевозки по гибким международным маршрутам",
   "Sea freight for efficient long-distance shipping": "Морские перевозки для эффективной доставки на дальние расстояния",
@@ -39,22 +88,22 @@ const russianTranslations = {
   "Air": "Авиа",
   "One team around the whole journey.": "Одна команда на всём маршруте.",
   "International shipping can cross several borders, carriers, and transport modes. TOJDORON keeps those moving parts connected.": "Международная перевозка может проходить через несколько границ, перевозчиков и видов транспорта. TOJDORON объединяет все этапы в единую систему.",
-  "Dushanbe-based coordination. Worldwide delivery thinking.": "Координация из Душанбе. Доставка по всему миру.",
-  "We select the practical route, monitor transit, and stay close to your cargo at every stage—whether the shipment moves by road, sea, air, or a combination shaped around the load.": "Мы выбираем практичный маршрут, контролируем перевозку и остаёмся на связи на каждом этапе — независимо от того, идёт ли груз по земле, морю, воздуху или комбинированным маршрутом.",
+  "Dushanbe-based coordination. Worldwide delivery thinking.": "Координация из Душанбе. Глобальный подход к доставке.",
+  "We select the practical route, monitor transit, and stay close to your cargo at every stage—whether the shipment moves by road, sea, air, or a combination shaped around the load.": "Мы выбираем подходящий маршрут, контролируем перевозку и остаёмся на связи на каждом этапе — независимо от того, перевозится ли груз автотранспортом, морем, воздухом или комбинированным способом.",
   "For businesses and private clients, that means one clear place to begin and one team to contact as the shipment progresses.": "Для компаний и частных клиентов это означает понятную точку старта и одну команду, с которой можно связаться в ходе перевозки.",
   "Meet TOJDORON": "Познакомиться с TOJDORON",
   "Choose the route that fits the cargo.": "Выберите маршрут, подходящий для груза.",
   "Four core services, coordinated as one logistics solution.": "Четыре ключевые услуги, объединённые в одно логистическое решение.",
-  "Flexible international transport for full, partial, and carefully planned loads.": "Гибкие международные перевозки полных и сборных грузов с продуманной организацией.",
-  "View road freight": "Смотреть автоперевозки",
+  "Flexible international transport for full, partial, and carefully planned loads.": "Гибкие международные перевозки полных и сборных грузов с тщательным планированием.",
+  "View road freight": "Посмотреть автоперевозки",
   "Cost-conscious maritime routes organized through to the final destination.": "Экономичные морские маршруты с организацией доставки до конечного пункта.",
-  "View sea freight": "Смотреть морские перевозки",
-  "A practical shipping plan shaped around the size, handling, and timing of the load.": "Практичный план перевозки с учётом размера, обработки и сроков груза.",
-  "View cargo shipping": "Смотреть грузовые перевозки",
-  "Fast, closely coordinated delivery for urgent and time-sensitive cargo.": "Быстрая и скоординированная доставка срочных грузов.",
-  "View air freight": "Смотреть авиаперевозки",
+  "View sea freight": "Посмотреть морские перевозки",
+  "A practical shipping plan shaped around the size, handling, and timing of the load.": "Практичный план перевозки с учётом размера груза, требований к его обработке и сроков.",
+  "View cargo shipping": "Посмотреть грузовые перевозки",
+  "Fast, closely coordinated delivery for urgent and time-sensitive cargo.": "Быстрая доставка с чёткой координацией для срочных грузов, требующих соблюдения сроков.",
+  "View air freight": "Посмотреть авиаперевозки",
   "A clear line from request to delivery.": "Понятный путь от запроса до доставки.",
-  "The transport mode can change. The way we support the shipment stays consistent.": "Вид транспорта может меняться. Наша поддержка остаётся последовательной на всём маршруте.",
+  "The transport mode can change. The way we support the shipment stays consistent.": "Вид транспорта может меняться. Сопровождение перевозки остаётся неизменным.",
   "Start with your cargo details": "Начните с информации о грузе",
   "Understand the shipment": "Изучаем груз",
   "Share the cargo, origin, destination, timing, and handling needs.": "Расскажите о грузе, пункте отправления и назначения, сроках и требованиях к обработке.",
@@ -64,15 +113,15 @@ const russianTranslations = {
   "Your cargo is followed through the key stages of transit.": "Мы контролируем груз на ключевых этапах перевозки.",
   "Support delivery": "Сопровождаем доставку",
   "We stay engaged through arrival at the final destination.": "Мы остаёмся на связи до прибытия груза в конечный пункт.",
-  "We move.": "Перемещаем.",
-  "We organize.": "Организуем.",
-  "We deliver worldwide.": "Доставляем по всему миру.",
+  "We move.": "Мы перевозим.",
+  "We organize.": "Мы организуем.",
+  "We deliver worldwide.": "Мы доставляем по всему миру.",
   "One point of contact": "Единая точка контакта",
   "A clear route into the process for businesses and private clients.": "Понятная точка входа в процесс для компаний и частных клиентов.",
   "Mode-neutral planning": "Планирование без привязки к виду транспорта",
   "Road, sea, cargo, or air is chosen around the shipment—not around a fixed template.": "Вид перевозки выбирается под конкретный груз, а не по заранее заданному шаблону.",
   "Support at every stage": "Поддержка на каждом этапе",
-  "Practical communication from initial request through final delivery.": "Практичная коммуникация от первого запроса до окончательной доставки.",
+  "Practical communication from initial request through final delivery.": "Практичное взаимодействие от первого запроса до конечной доставки.",
   "Have cargo to move?": "Нужно перевезти груз?",
   "Tell us where it starts, where it needs to go, and what matters most.": "Расскажите, откуда отправляется груз, куда его доставить и что для вас важнее всего.",
   "International freight coordination from Dushanbe to destinations worldwide.": "Координация международных перевозок из Душанбе по всему миру.",
@@ -93,82 +142,94 @@ const russianTranslations = {
   "Call +992 978 241717": "Позвонить: +992 978 241717",
   "Call +992 978 231717": "Позвонить: +992 978 231717",
   "Logistics organized around people.": "Логистика, построенная вокруг людей.",
+  "A TOJDORON-marked white freight truck, container train, port cranes, and cargo aircraft moving through a mountain logistics corridor": "Белый грузовой автомобиль с маркировкой TOJDORON, контейнерный поезд, портовые краны и грузовой самолёт, движущиеся по горному логистическому коридору",
+  "Two TOJDORON logistics specialists reviewing an international cargo route in Dushanbe": "Два специалиста TOJDORON по логистике, анализирующие международный маршрут перевозки в Душанбе",
   "TOJDORON is an international transport company that brings route planning, cargo movement, and practical support together in one place.": "TOJDORON — международная транспортная компания, объединяющая планирование маршрутов, перевозку грузов и практическую поддержку в одном месте.",
   "From Dushanbe, we help cargo move worldwide.": "Из Душанбе мы помогаем доставлять грузы по всему миру.",
   "We offer comprehensive logistics solutions for businesses and private clients across road, sea, cargo, and air freight.": "Мы предлагаем комплексные логистические решения для компаний и частных клиентов в сфере автомобильных, морских, грузовых и авиаперевозок.",
   "Our role starts before the shipment moves. We learn what is being transported, where it needs to go, how quickly it needs to arrive, and which handling conditions matter. From there, we organize the transport option that fits.": "Наша работа начинается до отправления груза. Мы выясняем, что перевозится, куда и как быстро это должно прибыть, а также какие условия обработки важны. Затем мы организуем подходящий вариант перевозки.",
-  "As the cargo moves, TOJDORON monitors the important transit stages and remains available as a clear point of contact. That continuity is at the heart of our work.": "В пути TOJDORON контролирует ключевые этапы перевозки и остаётся понятной точкой контакта. Такая непрерывная поддержка — основа нашей работы.",
-  "See our freight services": "Наши транспортные услуги",
-  "One company. Every stage connected.": "Одна компания. Все этапы связаны.",
+  "As the cargo moves, TOJDORON monitors the important transit stages and remains available as a clear point of contact. That continuity is at the heart of our work.": "В пути TOJDORON контролирует ключевые этапы перевозки и остаётся для вас понятной точкой контакта. Эта непрерывность — основа нашей работы.",
+  "See our freight services": "Посмотреть наши транспортные услуги",
+  "One company. Every stage connected.": "Одна компания. Все этапы взаимосвязаны.",
   "We plan": "Планируем",
   "Routes and transport modes are selected around the cargo, destination, timing, and budget.": "Маршруты и виды транспорта выбираются с учётом груза, пункта назначения, сроков и бюджета.",
   "We organize": "Организуем",
   "The moving parts of the shipment are coordinated into one practical delivery plan.": "Все этапы перевозки объединяются в один практичный план доставки.",
   "We monitor": "Отслеживаем",
-  "Key transit stages remain visible so questions can be handled with context.": "Ключевые этапы перевозки остаются под контролем, чтобы на каждый вопрос был понятный ответ.",
+  "Key transit stages remain visible so questions can be handled with context.": "Ключевые этапы перевозки остаются прозрачными, поэтому на вопросы можно отвечать с учётом всего контекста.",
   "We support delivery": "Сопровождаем доставку",
   "Our involvement continues through arrival at the final destination.": "Мы продолжаем работу до прибытия груза в конечный пункт.",
   "International freight coordination": "Координация международных перевозок",
-  "Coordinated freight, from Dushanbe.": "Скоординированная доставка из Душанбе.",
+  "Coordinated freight, from Dushanbe.": "Скоординированные перевозки из Душанбе.",
   "We organize road, sea, cargo, and air freight around each shipment’s route, timing, and handling requirements.": "Мы организуем автомобильные, морские, грузовые и авиаперевозки с учётом маршрута, сроков и требований к обработке каждого отправления.",
   "Find our office": "Найти наш офис",
   "Interactive operational view of road, sea, cargo, and air freight": "Интерактивный обзор автомобильных, морских, грузовых и авиаперевозок",
   "Scheduled cross-border delivery": "Плановая трансграничная доставка",
   "Containerized ocean transit": "Морская перевозка в контейнерах",
   "Warehouse consolidation and dispatch": "Консолидация и отправка со склада",
-  "Priority airfreight uplift": "Приоритетная авиадоставка",
+  "Priority airfreight uplift": "Приоритетная авиаперевозка",
   "Cargo handling": "Обработка грузов",
   "Highlight a freight service": "Выберите услугу для просмотра",
-  "What clients can expect from us.": "Что получают наши клиенты.",
-  "Clear decisions, practical communication, and attention to the cargo itself.": "Понятные решения, практичная коммуникация и внимание к самому грузу.",
+  "What clients can expect from us.": "Чего клиенты могут от нас ожидать.",
+  "Clear decisions, practical communication, and attention to the cargo itself.": "Понятные решения, практичное взаимодействие и внимание к самому грузу.",
   "Clear coordination": "Чёткая координация",
   "One understandable path through a shipment that may involve several stages.": "Понятный маршрут для перевозки, которая может включать несколько этапов.",
   "Fit-for-purpose routes": "Маршруты под задачу",
   "The route follows the needs of the cargo rather than a fixed service template.": "Маршрут строится вокруг потребностей груза, а не фиксированного шаблона услуги.",
   "Responsive support": "Оперативная поддержка",
   "Questions are handled by people who understand the shipment context.": "На вопросы отвечают специалисты, понимающие контекст перевозки.",
-  "Worldwide outlook": "Глобальный взгляд",
+  "Worldwide outlook": "Глобальный подход",
   "Every plan is shaped with the final destination and the full journey in view.": "Каждый план учитывает конечный пункт и весь путь груза.",
   "Let’s organize the next route.": "Организуем следующий маршрут.",
-  "Share the shipment details and TOJDORON will help you identify the right way forward.": "Расскажите о перевозке, и TOJDORON поможет выбрать правильный путь.",
+  "Share the shipment details and TOJDORON will help you identify the right way forward.": "Расскажите о перевозке, и TOJDORON поможет определить оптимальный следующий шаг.",
   "Get in touch": "Связаться с нами",
   "The right mode for every shipment.": "Подходящий вид перевозки для каждого груза.",
-  "TOJDORON organizes road, sea, cargo, and air freight as individual services or as one connected logistics plan.": "TOJDORON организует автомобильные, морские и авиаперевозки, а также обработку грузов — по отдельности или как единый логистический план.",
+  "TOJDORON organizes road, sea, cargo, and air freight as individual services or as one connected logistics plan.": "TOJDORON организует автомобильные, морские, грузовые и авиаперевозки — по отдельности или как единый логистический план.",
   "Service sections": "Разделы услуг",
-  "White road freight truck on an international highway": "Белый грузовой автомобиль TOJDORON на международной трассе",
-  "Container ship beneath working port cranes": "Контейнеровоз под рабочими портовыми кранами",
-  "Palletized cargo being carefully handled in a warehouse": "Паллетированный груз, который аккуратно обрабатывают на складе",
+  "TOJDORON-branded road truck, container ship, warehouse cargo equipment, and air freight aircraft": "Фирменный грузовой автомобиль TOJDORON, контейнеровоз, складское грузовое оборудование и грузовой самолёт",
+  "White road freight truck on an international highway": "Белый грузовой автомобиль на международной трассе",
+  "Container ship beneath working port cranes": "Контейнеровоз под работающими портовыми кранами",
+  "Palletized cargo being carefully handled in a warehouse": "Груз на паллетах, который аккуратно обрабатывают на складе",
   "Cargo aircraft being loaded on an airport apron": "Грузовой самолёт, который загружают на перроне аэропорта",
+  "White road freight truck in green mountain terrain": "Белый грузовой автомобиль на фоне зелёных гор",
+  "Container ship beneath port cranes": "Контейнеровоз под портовыми кранами",
+  "Cargo pallets being handled inside a warehouse": "Паллеты с грузом, обрабатываемые на складе",
+  "Cargo aircraft being loaded at an airport": "Грузовой самолёт, загружаемый в аэропорту",
   "Flexible cargo movement across international road routes.": "Гибкая перевозка грузов по международным автодорожным маршрутам.",
   "Road freight is a practical choice when a shipment needs adaptable routing, pickup and delivery coordination, or a direct connection between locations. We organize the journey around the load and destination.": "Автоперевозки подходят, когда грузу нужен гибкий маршрут, координация забора и доставки или прямое сообщение между пунктами. Мы организуем путь с учётом груза и места назначения.",
+  "TOJDORON logistics specialists coordinating an international shipment from Dushanbe": "Специалисты TOJDORON по логистике координируют международную перевозку из Душанбе",
+  "Modern white tractor-trailer positioned at a freight loading dock": "Современный белый автопоезд у грузовой погрузочной рампы",
+  "Large container vessel being worked by gantry cranes at a commercial port": "Большое контейнерное судно у причала, где работают козловые краны",
+  "Forklift carrying a wrapped pallet inside a professional cargo warehouse": "Погрузчик перевозит упакованную паллету внутри грузового склада",
+  "Wide-body cargo aircraft receiving a wrapped pallet at an airport freight terminal": "Широкофюзеляжный грузовой самолёт принимает упакованную паллету в грузовом терминале аэропорта",
   "Full and partial load planning": "Планирование полных и сборных грузов",
   "International route coordination": "Координация международных маршрутов",
-  "Pickup-to-destination support": "Поддержка от забора до доставки",
+  "Pickup-to-destination support": "Сопровождение от забора до доставки",
   "Shipment-stage communication": "Связь на каждом этапе перевозки",
   "Request a road freight quote": "Запросить расчёт автоперевозки",
-  "Efficient maritime shipping for long-distance international cargo.": "Эффективные морские перевозки для международных грузов на дальние расстояния.",
-  "For cargo suited to ocean transport, TOJDORON helps select a practical maritime route and keeps the shipment connected to the next stage of delivery beyond the port.": "Для грузов, подходящих для морской перевозки, TOJDORON подбирает практичный морской маршрут и связывает этап порта с дальнейшей доставкой.",
+  "Efficient maritime shipping for long-distance international cargo.": "Эффективные морские перевозки международных грузов на дальние расстояния.",
+  "For cargo suited to ocean transport, TOJDORON helps select a practical maritime route and keeps the shipment connected to the next stage of delivery beyond the port.": "Для грузов, подходящих для морской перевозки, TOJDORON подбирает практичный морской маршрут и координирует дальнейшую доставку после прохождения порта.",
   "Maritime route selection": "Подбор морского маршрута",
   "Containerized cargo planning": "Планирование контейнерной перевозки",
   "Port-stage coordination": "Координация на этапе порта",
   "Onward delivery organization": "Организация дальнейшей доставки",
   "Request a sea freight quote": "Запросить расчёт морской перевозки",
   "A shipping option matched to the cargo—not the other way around.": "Вариант перевозки под ваш груз, а не наоборот.",
-  "We accept and deliver varied types of freight, comparing the available transport options to find a convenient and cost-conscious plan for the shipment.": "Мы принимаем и доставляем разные типы грузов, сравнивая доступные варианты транспорта, чтобы найти удобный и экономичный план перевозки.",
+  "We accept and deliver varied types of freight, comparing the available transport options to find a convenient and cost-conscious plan for the shipment.": "Мы перевозим разные типы грузов, сравнивая доступные варианты транспорта, чтобы подобрать удобный и экономичный план перевозки.",
   "Route and mode comparison": "Сравнение маршрутов и видов транспорта",
   "Varied cargo profiles": "Разные типы грузов",
-  "Handling-aware planning": "Планирование с учётом обработки",
+  "Handling-aware planning": "Планирование с учётом требований к обработке",
   "Business and private shipments": "Грузы компаний и частных клиентов",
   "Discuss your cargo": "Обсудить ваш груз",
   "Fast transport for urgent and time-sensitive cargo.": "Быстрая перевозка срочных грузов с жёсткими сроками.",
-  "When timing is the priority, air freight offers a direct way to move cargo quickly. TOJDORON organizes the air route and helps connect airport handling with the final destination.": "Когда сроки важнее всего, авиаперевозки позволяют быстро доставить груз. TOJDORON организует авиамаршрут и связывает обработку в аэропорту с конечной доставкой.",
+  "When timing is the priority, air freight offers a direct way to move cargo quickly. TOJDORON organizes the air route and helps connect airport handling with the final destination.": "Когда сроки важнее всего, авиаперевозки позволяют быстро доставить груз. TOJDORON организует авиамаршрут и связывает обработку в аэропорту с доставкой до конечного пункта.",
   "Urgent shipment planning": "Планирование срочных отправлений",
   "International air routes": "Международные авиамаршруты",
   "Airport-stage coordination": "Координация на этапе аэропорта",
   "Final-destination support": "Поддержка до конечного пункта",
   "Request an air freight quote": "Запросить расчёт авиаперевозки",
   "One shipment can use more than one mode.": "Одна перевозка может включать несколько видов транспорта.",
-  "Some routes are strongest when road, sea, cargo handling, and air connections work together. TOJDORON looks at the full journey and organizes the handoffs as part of one plan.": "Некоторые маршруты эффективнее, когда автомобильные, морские, грузовые и воздушные этапы работают вместе. TOJDORON видит весь путь и объединяет его в один план.",
+  "Some routes are strongest when road, sea, cargo handling, and air connections work together. TOJDORON looks at the full journey and organizes the handoffs as part of one plan.": "Некоторые маршруты эффективнее, когда автомобильные, морские и воздушные перевозки, а также обработка грузов работают вместе. TOJDORON рассматривает весь путь и координирует передачу груза между этапами в рамках единого плана.",
   "Not sure which mode fits?": "Не уверены, какой вид перевозки подходит?",
   "Send the cargo details. We’ll help identify the most practical transport approach.": "Отправьте информацию о грузе. Мы поможем определить наиболее практичный способ перевозки.",
   "Tell us where the cargo needs to go.": "Расскажите, куда нужно доставить груз.",
@@ -189,7 +250,7 @@ const russianTranslations = {
   "Email address": "Адрес электронной почты",
   "Phone number": "Номер телефона",
   "Service": "Услуга",
-  "Not sure yet": "Пока не определился",
+  "Not sure yet": "Пока не определено",
   "City or country": "Город или страна",
   "Destination": "Пункт назначения",
   "Cargo details": "Данные о грузе",
@@ -200,7 +261,7 @@ const russianTranslations = {
   "Jabor Rasulov Street 3, 3rd floor, near Farovon Market.": "ул. Джаббора Расулова, 3, 3-й этаж, рядом с рынком Фаровон.",
   "Google map showing TOJDORON at Jabor Rasulov Street 3 in Dushanbe": "Карта Google с расположением TOJDORON на улице Джаббора Расулова, 3, в Душанбе",
   "Prefer to speak directly?": "Предпочитаете поговорить напрямую?",
-  "Choose either TOJDORON contact line and speak with our team about the shipment.": "Выберите любой номер TOJDORON и обсудите перевозку с нашей командой.",
+  "Choose either TOJDORON contact line and speak with our team about the shipment.": "Выберите любой контактный номер TOJDORON и обсудите перевозку с нашей командой.",
   "TOJDORON freight enquiry": "Запрос на перевозку TOJDORON",
   "Name": "Имя",
   "Not provided": "Не указано",
@@ -215,14 +276,14 @@ const russianTranslations = {
 };
 
 const pageTitles = {
-  "TOJDORON — International Freight, Organized": "TOJDORON — Международные перевозки",
+  "TOJDORON — International Freight, Organized": "TOJDORON — Организованные международные перевозки",
   "About TOJDORON — International Transport Company": "О TOJDORON — Международная транспортная компания",
-  "Freight Services — TOJDORON": "Грузовые услуги — TOJDORON",
+  "Freight Services — TOJDORON": "Транспортные услуги — TOJDORON",
   "Contact TOJDORON — Request a Freight Quote": "Контакты TOJDORON — Запросить расчёт перевозки"
 };
 
 const pageDescriptions = {
-  "TOJDORON coordinates international road, sea, air, and cargo freight from Dushanbe, Tajikistan.": "TOJDORON координирует автомобильные, морские, грузовые и авиаперевозки из Душанбе, Таджикистан.",
+  "TOJDORON coordinates international road, sea, air, and cargo freight from Dushanbe, Tajikistan.": "TOJDORON координирует автомобильные, морские, грузовые и авиаперевозки из Душанбе, Таджикистана.",
   "Learn how TOJDORON organizes international freight from Dushanbe with clear planning and support at every stage.": "Узнайте, как TOJDORON организует международные перевозки из Душанбе с понятным планированием и поддержкой на каждом этапе.",
   "Explore TOJDORON road freight, sea freight, cargo shipping, and air freight services for international delivery.": "Изучите услуги TOJDORON: автомобильные, морские, грузовые и авиаперевозки для международной доставки.",
   "Contact TOJDORON in Dushanbe for an international freight quote by road, sea, cargo, or air.": "Свяжитесь с TOJDORON в Душанбе, чтобы получить расчёт международной автомобильной, морской, грузовой или авиаперевозки."

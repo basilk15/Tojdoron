@@ -1,0 +1,5 @@
+# Playwright CLI verification artifacts
+.playwright-cli/
+
+# YAML files
+*.yml

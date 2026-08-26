@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = form?.querySelector(".form-status");
   const serviceSelect = form?.querySelector("#service");
   const translate = (source) => window.TOJDORON_I18N?.t(source) || source;
+  let readyMailto = null;
 
   const serviceMap = {
     road: "Road freight",
@@ -40,9 +41,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const renderReadyStatus = (mailto) => {
+    readyMailto = mailto;
+    delete status.dataset.translationKey;
+
+    const ready = document.createElement("span");
+    ready.dataset.translationKey = "Your enquiry is ready.";
+    ready.textContent = translate("Your enquiry is ready.");
+
+    const link = document.createElement("a");
+    link.href = mailto;
+    link.dataset.translationKey = "Continue in your email app";
+    link.textContent = translate("Continue in your email app");
+
+    const tail = document.createElement("span");
+    tail.dataset.translationKey = "to send it to TOJDORON.";
+    const translatedTail = translate("to send it to TOJDORON.");
+    tail.textContent = translatedTail;
+    const tailSeparator = /^[,.;:!?)]/.test(translatedTail.trim()) ? "" : " ";
+
+    status.replaceChildren(ready, " ", link, tailSeparator, tail);
+  };
+
   form?.querySelectorAll("input, select, textarea").forEach((field) => {
     field.addEventListener("input", () => clearFieldError(field));
     field.addEventListener("change", () => clearFieldError(field));
+  });
+
+  document.addEventListener("tojdoron:languagechange", () => {
+    if (readyMailto && status?.classList.contains("is-visible") && !status.classList.contains("is-error")) {
+      renderReadyStatus(readyMailto);
+    }
   });
 
   form?.addEventListener("submit", (event) => {
@@ -54,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = form.elements.namedItem("message");
     const requiredFields = [name, email, message];
     let firstInvalid = null;
+    readyMailto = null;
 
     requiredFields.forEach((field) => {
       clearFieldError(field);
@@ -98,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.setTimeout(() => {
       status.className = "form-status is-visible";
-      status.innerHTML = `${translate("Your enquiry is ready.")} <a href="${mailto}">${translate("Continue in your email app")}</a>${translate("to send it to TOJDORON.")}`;
+      renderReadyStatus(mailto);
       status.focus();
       submitButton.disabled = false;
       submitButton.removeAttribute("data-state");
