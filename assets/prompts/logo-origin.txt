@@ -1,0 +1,1 @@
+User-provided source asset. The file Logo.png is the official TOJDORON logo supplied in the project directory and must not be regenerated or substituted.

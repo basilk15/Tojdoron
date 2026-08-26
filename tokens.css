@@ -1,0 +1,76 @@
+/* Hallmark · tokens: custom route-led logistics · anchor hue: forest green */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap');
+
+:root {
+  --color-paper: oklch(98% 0.012 145);
+  --color-paper-2: oklch(95% 0.020 145);
+  --color-paper-3: oklch(91% 0.032 145);
+  --color-ink: oklch(21% 0.026 154);
+  --color-ink-2: oklch(36% 0.024 154);
+  --color-muted: oklch(50% 0.020 154);
+  --color-rule: oklch(82% 0.030 145);
+  --color-rule-strong: oklch(70% 0.045 145);
+  --color-accent: oklch(49% 0.158 150);
+  --color-accent-strong: oklch(36% 0.124 154);
+  --color-accent-bright: oklch(68% 0.155 145);
+  --color-accent-soft: oklch(89% 0.070 145);
+  --color-accent-ink: oklch(98% 0.012 145);
+  --color-dark: oklch(17% 0.054 155);
+  --color-dark-2: oklch(23% 0.060 155);
+  --color-dark-muted: oklch(76% 0.030 150);
+  --color-focus: oklch(63% 0.200 145);
+  --color-error: oklch(50% 0.180 28);
+  --color-success: oklch(49% 0.158 150);
+  --color-shadow: oklch(17% 0.054 155 / 0.18);
+  --color-shadow-soft: oklch(17% 0.054 155 / 0.09);
+  --color-overlay-heavy: oklch(14% 0.060 155 / 0.84);
+  --color-overlay-mid: oklch(18% 0.060 155 / 0.58);
+  --color-overlay-light: oklch(20% 0.040 155 / 0.16);
+  --color-white-glass: oklch(98% 0.012 145 / 0.92);
+  --color-transparent: transparent;
+
+  --font-display: "Sora", sans-serif;
+  --font-body: "Manrope", sans-serif;
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
+  --space-section: clamp(5rem, 9vw, 8.5rem);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.05rem, 1.5vw, 1.25rem);
+  --text-xl: clamp(1.35rem, 2vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 3vw, 2.6rem);
+  --text-3xl: clamp(2.5rem, 5vw, 4.5rem);
+  --text-display: clamp(3.1rem, 7.4vw, 6rem);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-round: 999px;
+
+  --rule-thin: 1px;
+  --rule-medium: 2px;
+
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-slow: 620ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --shadow-soft: 0 1rem 3rem var(--color-shadow-soft);
+  --shadow-deep: 0 1.5rem 4rem var(--color-shadow);
+  --container: 75rem;
+  --header-height: 5rem;
+}
+
