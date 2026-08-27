@@ -48,7 +48,7 @@ Visitors may be comparing transport options, planning a commercial shipment, or 
 ## Evidence on Hand
 
 - Real logo files: `Logo.png` and `logo in greenish theme.png`.
-- Real contact email: `tojdoron1717@gmail.com`.
+- Real contact email: `tojdoronlogistics@gmail.com`.
 - Two supplied phone numbers: `+992 978 241717` and `+992 978 231717`.
 - Real address: Jabor Rasulov Street 3, 3rd floor, landmark Farovon Market, Dushanbe, Tajikistan.
 - Company description and service list supplied directly by the client.

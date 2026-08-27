@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = form?.querySelector(".form-status");
   const serviceSelect = form?.querySelector("#service");
   const translate = (source) => window.TOJDORON_I18N?.t(source) || source;
-  let readyMailto = null;
 
   const serviceMap = {
     road: "Road freight",
@@ -41,26 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const renderReadyStatus = (mailto) => {
-    readyMailto = mailto;
-    delete status.dataset.translationKey;
-
-    const ready = document.createElement("span");
-    ready.dataset.translationKey = "Your enquiry is ready.";
-    ready.textContent = translate("Your enquiry is ready.");
-
-    const link = document.createElement("a");
-    link.href = mailto;
-    link.dataset.translationKey = "Continue in your email app";
-    link.textContent = translate("Continue in your email app");
-
-    const tail = document.createElement("span");
-    tail.dataset.translationKey = "to send it to TOJDORON.";
-    const translatedTail = translate("to send it to TOJDORON.");
-    tail.textContent = translatedTail;
-    const tailSeparator = /^[,.;:!?)]/.test(translatedTail.trim()) ? "" : " ";
-
-    status.replaceChildren(ready, " ", link, tailSeparator, tail);
+  const setStatus = (message, isError = false) => {
+    if (!status) return;
+    status.dataset.translationKey = message;
+    status.textContent = translate(message);
+    status.className = `form-status is-visible${isError ? " is-error" : ""}`;
   };
 
   form?.querySelectorAll("input, select, textarea").forEach((field) => {
@@ -68,13 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     field.addEventListener("change", () => clearFieldError(field));
   });
 
-  document.addEventListener("tojdoron:languagechange", () => {
-    if (readyMailto && status?.classList.contains("is-visible") && !status.classList.contains("is-error")) {
-      renderReadyStatus(readyMailto);
-    }
-  });
-
-  form?.addEventListener("submit", (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form || !submitButton || !submitLabel || !status) return;
 
@@ -83,13 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = form.elements.namedItem("message");
     const requiredFields = [name, email, message];
     let firstInvalid = null;
-    readyMailto = null;
 
     requiredFields.forEach((field) => {
       clearFieldError(field);
       const value = field.value.trim();
       if (!value) {
-        setFieldError(field, field === message ? "Add a short description of the cargo and route." : "Complete this field so we can prepare the enquiry.");
+        setFieldError(field, field === message ? "Add a short description of the cargo and route." : "Complete this field before sending the enquiry.");
         firstInvalid ||= field;
       } else if (field === email && !/^\S+@\S+\.\S+$/.test(value)) {
         setFieldError(field, "Enter a complete email address, such as name@example.com.");
@@ -98,42 +75,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (firstInvalid) {
-      status.dataset.translationKey = "Check the highlighted fields, then prepare the enquiry again.";
-      status.textContent = translate("Check the highlighted fields, then prepare the enquiry again.");
-      status.className = "form-status is-visible is-error";
+      setStatus("Check the highlighted fields, then send the enquiry again.", true);
       firstInvalid.focus();
+      return;
+    }
+
+    const accessKey = form.elements.namedItem("access_key");
+    if (!accessKey?.value || accessKey.value === "YOUR_WEB3FORMS_ACCESS_KEY") {
+      setStatus("Form email is not configured yet. Add the Web3Forms access key before publishing.", true);
       return;
     }
 
     submitButton.disabled = true;
     submitButton.setAttribute("data-state", "loading");
-    submitLabel.textContent = translate("Preparing email…");
+    submitLabel.textContent = translate("Sending enquiry…");
 
-    const formData = new FormData(form);
-    const body = [
-      `${translate("Name")}: ${formData.get("name")}`,
-      `${translate("Company")}: ${formData.get("company") || translate("Not provided")}`,
-      `${translate("Email")}: ${formData.get("email")}`,
-      `${translate("Phone")}: ${formData.get("phone") || translate("Not provided")}`,
-      `${translate("Service")}: ${formData.get("service")}`,
-      `${translate("Origin")}: ${formData.get("origin") || translate("Not provided")}`,
-      `${translate("Destination")}: ${formData.get("destination") || translate("Not provided")}`,
-      "",
-      `${translate("Cargo details")}:`,
-      formData.get("message")
-    ].join("\n");
+    try {
+      const formData = new FormData(form);
+      formData.set("subject", `${translate("TOJDORON freight enquiry")} — ${formData.get("service")}`);
 
-    const subject = `${translate("TOJDORON freight enquiry")} — ${formData.get("service")}`;
-    const mailto = `mailto:tojdoron1717@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" }
+      });
+      const result = await response.json().catch(() => null);
 
-    window.setTimeout(() => {
-      status.className = "form-status is-visible";
-      renderReadyStatus(mailto);
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.body?.message || result?.message || "Web3Forms submission failed");
+      }
+
+      form.reset();
+      setStatus("Your enquiry was sent successfully. We'll be in touch soon.");
       status.focus();
+    } catch (error) {
+      console.error("Web3Forms submission failed:", error);
+      setStatus("We couldn't send your enquiry. Please try again or email us directly.", true);
+      status.focus();
+    } finally {
       submitButton.disabled = false;
       submitButton.removeAttribute("data-state");
-      submitLabel.textContent = translate("Prepare my enquiry");
-      window.location.href = mailto;
-    }, 350);
+      submitLabel.textContent = translate("Send my enquiry");
+    }
   });
 });

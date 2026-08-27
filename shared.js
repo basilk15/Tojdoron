@@ -244,7 +244,7 @@ const russianTranslations = {
   "Cargo type and approximate size": "Тип и примерный размер груза",
   "Preferred timing": "Желаемые сроки",
   "Any special handling needs": "Особые требования к обработке",
-  "Complete the form and your email application will open with the shipment details prepared for TOJDORON.": "Заполните форму, и откроется почтовое приложение с подготовленными данными о перевозке для TOJDORON.",
+  "Complete the form and TOJDORON will receive your shipment details.": "Заполните форму, и TOJDORON получит данные о вашей перевозке.",
   "Your name": "Ваше имя",
   "Optional": "Необязательно",
   "Email address": "Адрес электронной почты",
@@ -255,7 +255,7 @@ const russianTranslations = {
   "Destination": "Пункт назначения",
   "Cargo details": "Данные о грузе",
   "What are you shipping, when should it move, and what should we know?": "Что нужно перевезти, когда отправить и что нам важно знать?",
-  "Prepare my enquiry": "Подготовить запрос",
+  "Send my enquiry": "Отправить запрос",
   "Required fields are marked with an asterisk.": "Обязательные поля отмечены звёздочкой.",
   "Find TOJDORON in Dushanbe.": "Найдите TOJDORON в Душанбе.",
   "Jabor Rasulov Street 3, 3rd floor, near Farovon Market.": "ул. Джаббора Расулова, 3, 3-й этаж, рядом с рынком Фаровон.",
@@ -266,13 +266,13 @@ const russianTranslations = {
   "Name": "Имя",
   "Not provided": "Не указано",
   "Add a short description of the cargo and route.": "Добавьте краткое описание груза и маршрута.",
-  "Complete this field so we can prepare the enquiry.": "Заполните это поле, чтобы мы могли подготовить запрос.",
+  "Complete this field before sending the enquiry.": "Заполните это поле перед отправкой запроса.",
   "Enter a complete email address, such as name@example.com.": "Укажите полный адрес электронной почты, например name@example.com.",
-  "Check the highlighted fields, then prepare the enquiry again.": "Проверьте выделенные поля и снова подготовьте запрос.",
-  "Preparing email…": "Подготовка письма…",
-  "Your enquiry is ready.": "Ваш запрос готов.",
-  "Continue in your email app": "Продолжить в почтовом приложении",
-  "to send it to TOJDORON.": ", чтобы отправить его в TOJDORON."
+  "Check the highlighted fields, then send the enquiry again.": "Проверьте выделенные поля и снова отправьте запрос.",
+  "Sending enquiry…": "Отправка запроса…",
+  "Your enquiry was sent successfully. We'll be in touch soon.": "Ваш запрос успешно отправлен. Мы свяжемся с вами.",
+  "We couldn't send your enquiry. Please try again or email us directly.": "Не удалось отправить запрос. Попробуйте ещё раз или напишите нам напрямую.",
+  "Form email is not configured yet. Add the Web3Forms access key before publishing.": "Почта формы ещё не настроена. Добавьте ключ Web3Forms перед публикацией."
 };
 
 const pageTitles = {
