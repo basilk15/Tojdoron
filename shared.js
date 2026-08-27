@@ -391,6 +391,7 @@ applyLanguage(currentLanguage);
 const reducePageMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let navigationInProgress = false;
 let navigationTimeout = null;
+let pageIntroTimeout = null;
 let skipPageIntro = false;
 try {
   skipPageIntro = window.sessionStorage.getItem("tojdoron-page-transition") === "pending";
@@ -398,20 +399,32 @@ try {
 } catch {}
 
 const pageTransition = document.createElement("div");
+const pageTransitionMarkup = '<div class="page-transition__lockup"><svg class="page-transition__piece page-transition__piece--star" viewBox="0 0 629 440" aria-hidden="true"><path pathLength="1" d="M216 35 187 144 76 118 153 188 12 362 214 259 420 409 358 282 405 108 285 140Z" /></svg><img class="page-transition__piece page-transition__piece--wordmark" src="assets/tojdoron-logo-wordmark.png?v=logo-deconstruction-v3" alt="" width="629" height="440" /><img class="page-transition__piece page-transition__piece--logo" src="assets/tojdoron-logo-green-v2.png" alt="" width="629" height="440" /></div>';
 pageTransition.className = "page-transition";
 pageTransition.setAttribute("aria-hidden", "true");
-pageTransition.innerHTML = '<div class="page-transition__lockup"><svg class="page-transition__piece page-transition__piece--star" viewBox="0 0 629 440" aria-hidden="true"><path pathLength="1" d="M216 35 187 144 76 118 153 188 12 362 214 259 420 409 358 282 405 108 285 140Z" /></svg><img class="page-transition__piece page-transition__piece--wordmark" src="assets/tojdoron-logo-wordmark.png?v=logo-deconstruction-v3" alt="" width="629" height="440" /><img class="page-transition__piece page-transition__piece--logo" src="assets/tojdoron-logo-green-v2.png" alt="" width="629" height="440" /></div>';
+pageTransition.innerHTML = pageTransitionMarkup;
 document.body.prepend(pageTransition);
 
-if (reducePageMotion) {
-  pageTransition.classList.add("is-entered");
-} else if (skipPageIntro) {
-  pageTransition.classList.add("is-entered");
-} else {
+const startPageIntro = (skipIntro = false) => {
+  if (pageIntroTimeout) window.clearTimeout(pageIntroTimeout);
+  pageIntroTimeout = null;
+  pageTransition.className = "page-transition";
+  pageTransition.innerHTML = pageTransitionMarkup;
+
+  if (reducePageMotion || skipIntro) {
+    pageTransition.classList.add("is-entered");
+    return;
+  }
+
   window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
-    window.setTimeout(() => pageTransition.classList.add("is-entered"), 1040);
+    pageIntroTimeout = window.setTimeout(() => {
+      pageTransition.classList.add("is-entered");
+      pageIntroTimeout = null;
+    }, 1040);
   }));
-}
+};
+
+startPageIntro(skipPageIntro);
 
 document.addEventListener("DOMContentLoaded", () => {
   const header = document.querySelector(".site-header");
@@ -490,7 +503,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (navigationTimeout) window.clearTimeout(navigationTimeout);
     navigationTimeout = null;
     navigationInProgress = false;
-    pageTransition.className = "page-transition is-entered";
+    try { window.sessionStorage.removeItem("tojdoron-page-transition"); } catch {}
+    startPageIntro();
     closeMenu();
   });
 
