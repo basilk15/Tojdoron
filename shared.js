@@ -389,6 +389,8 @@ addLanguageSwitcher();
 applyLanguage(currentLanguage);
 
 const reducePageMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let navigationInProgress = false;
+let navigationTimeout = null;
 let skipPageIntro = false;
 try {
   skipPageIntro = window.sessionStorage.getItem("tojdoron-page-transition") === "pending";
@@ -482,7 +484,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const revealItems = document.querySelectorAll("[data-reveal]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let navigationInProgress = false;
+
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    if (navigationTimeout) window.clearTimeout(navigationTimeout);
+    navigationTimeout = null;
+    navigationInProgress = false;
+    pageTransition.className = "page-transition is-entered";
+    closeMenu();
+  });
 
   document.addEventListener("click", (event) => {
     const link = event.target.closest("a[href]");
@@ -506,8 +516,9 @@ document.addEventListener("DOMContentLoaded", () => {
     try { window.sessionStorage.setItem("tojdoron-page-transition", "pending"); } catch {}
     pageTransition.className = "page-transition is-leaving";
     window.requestAnimationFrame(() => pageTransition.classList.add("is-covering"));
-    window.setTimeout(() => {
+    navigationTimeout = window.setTimeout(() => {
       window.location.href = destination.href;
+      navigationTimeout = null;
     }, 1000);
   });
 
