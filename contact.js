@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const formData = new FormData(form);
-      formData.set("subject", `${translate("TOJDORON freight enquiry")} — ${formData.get("service")}`);
+      formData.set("subject", `${translate("TOJDORON freight enquiry")} — ${translate(formData.get("service") || "")}`);
 
       const response = await fetch(form.action, {
         method: "POST",

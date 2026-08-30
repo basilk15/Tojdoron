@@ -244,6 +244,16 @@
 
   .service-index a {
     min-height: 3.25rem;
+    padding-inline: var(--space-xs);
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .service-detail__copy > .button {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .service-detail {
