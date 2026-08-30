@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "tojdoron.vercel.app"
+        }
+      ],
+      "destination": "https://tojdoronlogistics.com/:path*",
+      "permanent": true
+    }
+  ]
+}

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tojdoron.vercel.app/sitemap.xml
+Sitemap: https://tojdoronlogistics.com/sitemap.xml
