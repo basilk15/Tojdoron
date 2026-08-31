@@ -147,13 +147,52 @@
 }
 
 .multimodal {
-  padding-block: var(--space-section);
+  position: relative;
+  overflow: clip;
+  padding-block: clamp(5.5rem, 10vw, 9rem);
+  background:
+    radial-gradient(circle at 84% 12%, rgba(66, 187, 94, 0.13), transparent 26rem),
+    var(--color-dark);
+}
+
+.multimodal::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0 11%, rgba(127, 210, 143, 0.06) 11% 11.1%, transparent 11.1% 100%);
+  content: "";
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .multimodal__grid {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(3rem, 8vw, 7rem);
+}
+
+.multimodal__heading {
+  position: relative;
+  align-self: center;
+}
+
+.multimodal__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: var(--space-lg);
+  color: var(--color-accent-bright);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.multimodal__eyebrow::before {
+  width: 2rem;
+  height: var(--rule-medium);
+  background: var(--color-accent-bright);
+  content: "";
 }
 
 .multimodal h2 {
@@ -161,6 +200,36 @@
   margin-bottom: 0;
   color: var(--color-accent-ink);
   font-size: var(--text-3xl);
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+}
+
+.multimodal__index {
+  display: grid;
+  grid-template-columns: auto minmax(3rem, 1fr) auto;
+  align-items: center;
+  gap: var(--space-sm);
+  width: min(100%, 16rem);
+  margin-top: var(--space-2xl);
+  color: var(--color-dark-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.multimodal__index i {
+  position: relative;
+  height: var(--rule-thin);
+  overflow: hidden;
+  background: var(--color-dark-2);
+}
+
+.multimodal__index i::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 42%;
+  background: var(--color-accent-bright);
+  content: "";
 }
 
 .multimodal__copy p {
@@ -169,17 +238,41 @@
 }
 
 .multimodal__route {
+  counter-reset: route-step;
   display: grid;
   grid-template-columns: auto minmax(1rem, 1fr) auto minmax(1rem, 1fr) auto minmax(1rem, 1fr) auto;
   align-items: center;
   gap: var(--space-sm);
   margin-top: var(--space-2xl);
+  border: var(--rule-thin) solid var(--color-dark-2);
+  border-radius: var(--radius-md);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .multimodal__route span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   color: var(--color-accent-ink);
   font-size: var(--text-xs);
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.multimodal__route span::before {
+  counter-increment: route-step;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: var(--rule-thin) solid var(--color-accent);
+  border-radius: var(--radius-round);
+  color: var(--color-accent-bright);
+  content: counter(route-step, decimal-leading-zero);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
 }
 
 .multimodal__route i {
@@ -200,6 +293,37 @@
 
 .multimodal__route i:nth-of-type(2)::after { animation-delay: 0.45s; }
 .multimodal__route i:nth-of-type(3)::after { animation-delay: 0.9s; }
+
+.multimodal__note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  border-top: var(--rule-thin) solid var(--color-dark-2);
+  padding-top: var(--space-lg);
+  color: var(--color-dark-muted);
+  font-size: var(--text-sm);
+}
+
+.multimodal__note-mark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: var(--rule-thin) solid var(--color-accent);
+  border-radius: var(--radius-round);
+  color: var(--color-accent-bright);
+}
+
+.multimodal__note-mark svg {
+  width: 1rem;
+  height: 1rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
 
 @keyframes route-sweep {
   0%, 15% { transform: translateX(-100%); }
@@ -270,6 +394,9 @@
 
   .multimodal__route {
     grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: var(--space-xl);
+    padding: var(--space-lg) var(--space-md);
   }
 
   .multimodal__route i {
@@ -279,6 +406,11 @@
   }
 
   .multimodal__route span {
+    justify-content: center;
     text-align: center;
+  }
+
+  .multimodal__note {
+    align-items: flex-start;
   }
 }

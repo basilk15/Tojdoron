@@ -288,6 +288,8 @@ const russianTranslations = {
   "Request an air freight quote": "Запросить расчёт авиаперевозки",
   "One shipment can use more than one mode.": "Одна перевозка может включать несколько видов транспорта.",
   "Some routes are strongest when road, sea, cargo handling, and air connections work together. TOJDORON looks at the full journey and organizes the handoffs as part of one plan.": "Некоторые маршруты наиболее эффективны, когда автомобильные и морские перевозки, обработка грузов и авиасообщение работают как единая система. TOJDORON рассматривает весь путь и координирует передачу груза между этапами в рамках единого плана.",
+  "Multimodal planning": "Мультимодальное планирование",
+  "One coordinated plan from departure to delivery.": "Единый план на всём маршруте — от отправления до доставки.",
   "Not sure which mode fits?": "Не уверены, какой вид перевозки подходит?",
   "Send the cargo details. We’ll help identify the most practical transport approach.": "Отправьте информацию о грузе. Мы поможем определить наиболее практичный способ перевозки.",
   "Tell us where the cargo needs to go.": "Расскажите, куда нужно доставить груз.",
