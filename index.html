@@ -34,9 +34,9 @@
         "email": "tojdoronlogistics@gmail.com"
       }
     </script>
-    <link rel="stylesheet" href="index.css?v=normal-scale" />
-    <script src="shared.js?v=page-transition-speed-v7" defer></script>
-    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="index.css?v=partners-loop-v7" />
+    <script src="shared.js?v=russian-copy-v1" defer></script>
+    <script src="index.js?v=partners-loop-v1" defer></script>
   </head>
   <body>
     <!--
@@ -233,7 +233,41 @@
         </div>
       </section>
 
-      <div class="container">
+      <section class="partners-section section--paper-2" id="partners" aria-labelledby="partners-title">
+        <div class="container">
+          <div class="partners-section__heading" data-reveal>
+            <div>
+              <p class="eyebrow"><span></span> Our partners</p>
+              <h2 id="partners-title">Trusted connections behind every shipment.</h2>
+            </div>
+            <p class="section-intro">We work with a trusted network of organizations that helps us coordinate cargo across routes and borders.</p>
+          </div>
+
+          <div class="partner-loop" data-partner-loop aria-label="TOJDORON partner organizations" data-reveal>
+            <button class="partner-loop__button partner-loop__button--prev" type="button" data-partner-loop-dir="-1" aria-label="Show previous partners">
+              <span aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M34 24H14" /><path d="M22 16 14 24l8 8" /></svg></span>
+            </button>
+            <div class="partner-loop__shell">
+              <div class="partner-loop__stage" tabindex="0" aria-label="TOJDORON partner logos">
+                <div class="partner-loop__track">
+                  <article class="partner-loop__card" style="--i:0; --partner-card-bg:#0b607b"><img src="assets/partners/fardo-cargo-card.png" alt="Fardo Cargo partner logo" width="1536" height="1024" /></article>
+                  <article class="partner-loop__card" style="--i:1; --partner-card-bg:#1717ed"><img src="assets/partners/rusmostrans-card.png" alt="Rusmostrans partner logo" width="1536" height="1024" /></article>
+                  <article class="partner-loop__card" style="--i:2; --partner-card-bg:#050505"><img src="assets/partners/armark-card.png" alt="Armark partner logo" width="1536" height="1024" /></article>
+                  <article class="partner-loop__card" style="--i:3; --partner-card-bg:#0f472a"><img src="assets/partners/zira-trade-card.png" alt="Zira Trade partner logo" width="1536" height="1024" /></article>
+                  <article class="partner-loop__card" style="--i:4; --partner-card-bg:#fff"><img src="assets/partners/pomcap-card.png" alt="Pomcap partner logo" width="1536" height="1024" /></article>
+                  <article class="partner-loop__card" style="--i:5; --partner-card-bg:#fff"><img src="assets/partners/symphony-residence-card.png" alt="Symphony Residence partner logo" width="1536" height="1024" /></article>
+                  <article class="partner-loop__card" style="--i:6; --partner-card-bg:#039e87"><img src="assets/partners/arvis-card.png" alt="Arvis partner logo" width="1536" height="1024" /></article>
+                </div>
+              </div>
+            </div>
+            <button class="partner-loop__button partner-loop__button--next" type="button" data-partner-loop-dir="1" aria-label="Show next partners">
+              <span aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 24H34" /><path d="M26 16 34 24l-8 8" /></svg></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="container cta-band-shell">
         <section class="cta-band" aria-labelledby="home-cta-title" data-reveal>
           <div>
             <h2 id="home-cta-title">Have cargo to move?</h2>

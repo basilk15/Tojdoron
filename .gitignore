@@ -1,5 +1,8 @@
 # Playwright CLI verification artifacts
 .playwright-cli/
 
+# Local PDF rendering and visual QA artifacts
+/tmp/
+
 # YAML files
 *.yml

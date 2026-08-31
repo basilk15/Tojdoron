@@ -774,6 +774,10 @@ p {
   box-shadow: var(--shadow-deep);
 }
 
+.cta-band-shell {
+  padding-top: clamp(3.5rem, 5vw, 5rem);
+}
+
 .cta-band h2 {
   margin-bottom: var(--space-xs);
   color: var(--color-accent-ink);
