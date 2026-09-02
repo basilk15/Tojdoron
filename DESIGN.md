@@ -207,7 +207,7 @@ Primary, light, and outline buttons share a 3rem minimum target, bold Manrope la
 
 ### Quote Form and Contact Truth
 
-Use the exact contact record: **+992 978 241717**, **+992 978 231717**, **tojdoronlogistics@gmail.com**, and **Jabor Rasulov Street 3, 3rd floor, landmark Farovon Market, Dushanbe, Tajikistan**. The canonical Google Maps query is `Jabor Rasulov Street 3, Dushanbe, Tajikistan`. Keep the current open-map URL exactly as `https://www.google.com/maps/search/?api=1&query=Jabor%20Rasulov%20Street%203%2C%20Dushanbe%2C%20Tajikistan` and the embed URL exactly as `https://www.google.com/maps?q=Jabor%20Rasulov%20Street%203%2C%20Dushanbe%2C%20Tajikistan&output=embed`.
+Use the exact contact record: **+992 978 241717**, **+992 978 231717**, **info@tojdoronlogistics.com**, and **Jabor Rasulov Street 3, 3rd floor, landmark Farovon Market, Dushanbe, Tajikistan**. The canonical Google Maps query is `Jabor Rasulov Street 3, Dushanbe, Tajikistan`. Keep the current open-map URL exactly as `https://www.google.com/maps/search/?api=1&query=Jabor%20Rasulov%20Street%203%2C%20Dushanbe%2C%20Tajikistan` and the embed URL exactly as `https://www.google.com/maps?q=Jabor%20Rasulov%20Street%203%2C%20Dushanbe%2C%20Tajikistan&output=embed`.
 
 The quote form is intentionally client-side. It validates name, email, and cargo details with labels, inline errors, `aria-invalid`, focused recovery, and a live status; it then prepares a structured `mailto:` draft to the official email and opens the visitor's email application. This is the truthful behavior because no backend form endpoint or CRM was supplied. Do not describe the enquiry as submitted or delivered until a real endpoint and success contract exist.
 
