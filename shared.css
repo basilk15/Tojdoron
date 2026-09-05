@@ -53,11 +53,56 @@ body.nav-open {
   transition: transform 420ms var(--ease-out);
 }
 
+/* Fill every viewport; the renderer keeps the vehicle layers proportional. */
+.page-transition__route-prelude {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #f5ead5;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.page-transition__route-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.page-transition.is-route-playing .page-transition__route-prelude {
+  opacity: 1;
+}
+.page-transition.is-route-finished .page-transition__route-prelude,
+.page-transition.is-logo-sequence .page-transition__route-prelude {
+  opacity: 0;
+}
+.page-transition.is-skipped { transition: none; }
+
+.page-transition:not(.is-logo-sequence) .page-transition__lockup {
+  visibility: hidden;
+}
+
 .page-transition__lockup {
   position: relative;
+  z-index: 2;
   width: clamp(11rem, 22vw, 16rem);
   aspect-ratio: 629 / 440;
   isolation: isolate;
+}
+
+.page-transition.is-logo-sequence .page-transition__route-prelude {
+  opacity: 0;
+}
+
+.page-transition:not(.is-logo-sequence) .page-transition__lockup::before,
+.page-transition:not(.is-logo-sequence) .page-transition__lockup::after,
+.page-transition:not(.is-logo-sequence) .page-transition__piece {
+  animation-play-state: paused;
 }
 
 .page-transition__lockup::before {
@@ -172,6 +217,12 @@ body.nav-open {
   animation: page-logo-logo-plate-in 100ms var(--ease-out) 620ms both;
 }
 
+.page-transition.is-covering:not(.is-logo-sequence) .page-transition__lockup::before,
+.page-transition.is-covering:not(.is-logo-sequence) .page-transition__lockup::after,
+.page-transition.is-covering:not(.is-logo-sequence) .page-transition__piece {
+  animation-play-state: paused;
+}
+
 @keyframes page-logo-star-in {
   0% { opacity: 0; stroke-dashoffset: 1; transform: scale(0.98) rotate(-1deg); }
   10% { opacity: 1; }
@@ -198,6 +249,7 @@ body.nav-open {
   from { opacity: 0; transform: translate3d(0, 0.45rem, 0) scale(0.97); }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
+
 
 ::selection {
   background: var(--color-accent-bright);

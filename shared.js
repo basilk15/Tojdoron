@@ -471,9 +471,9 @@ addLanguageSwitcher();
 applyLanguage(currentLanguage);
 
 const reducePageMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const logoIntroDuration = 1040;
 let navigationInProgress = false;
-let navigationTimeout = null;
-let pageIntroTimeout = null;
+let transitionRun = 0;
 let skipPageIntro = false;
 try {
   skipPageIntro = window.sessionStorage.getItem("tojdoron-page-transition") === "pending";
@@ -481,31 +481,59 @@ try {
 } catch {}
 
 const pageTransition = document.createElement("div");
-const pageTransitionMarkup = '<div class="page-transition__lockup"><svg class="page-transition__piece page-transition__piece--star" viewBox="0 0 629 440" aria-hidden="true"><path pathLength="1" d="M216 35 187 144 76 118 153 188 12 362 214 259 420 409 358 282 405 108 285 140Z" /></svg><img class="page-transition__piece page-transition__piece--wordmark" src="assets/tojdoron-logo-wordmark.png?v=logo-deconstruction-v3" alt="" width="629" height="440" /><img class="page-transition__piece page-transition__piece--logo" src="assets/tojdoron-logo-green-v2.png" alt="" width="629" height="440" /></div>';
-pageTransition.className = "page-transition";
+const pageTransitionMarkup = '<div class="page-transition__route-prelude"><canvas class="page-transition__route-canvas" width="1672" height="941" aria-hidden="true"></canvas></div><div class="page-transition__lockup"><svg class="page-transition__piece page-transition__piece--star" viewBox="0 0 629 440" aria-hidden="true"><path pathLength="1" d="M216 35 187 144 76 118 153 188 12 362 214 259 420 409 358 282 405 108 285 140Z" /></svg><img class="page-transition__piece page-transition__piece--wordmark" src="assets/tojdoron-logo-wordmark.png?v=logo-deconstruction-v3" alt="" width="629" height="440" /><img class="page-transition__piece page-transition__piece--logo" src="assets/tojdoron-logo-green-v2.png" alt="" width="629" height="440" /></div>';
 pageTransition.setAttribute("aria-hidden", "true");
-pageTransition.innerHTML = pageTransitionMarkup;
 document.body.prepend(pageTransition);
 
-const startPageIntro = (skipIntro = false) => {
-  if (pageIntroTimeout) window.clearTimeout(pageIntroTimeout);
-  pageIntroTimeout = null;
-  pageTransition.className = "page-transition";
-  pageTransition.innerHTML = pageTransitionMarkup;
+const transitionWait = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
 
-  if (reducePageMotion || skipIntro) {
-    pageTransition.classList.add("is-entered");
+// One sequence owns the layer at a time, including fast clicks and history restoration.
+const playPageTransition = async ({ skip = false, leaving = false, destination } = {}) => {
+  const run = ++transitionRun;
+  window.TOJDORON_ROUTE?.cancel();
+  pageTransition.className = "page-transition" + (leaving ? " is-leaving" : "");
+  pageTransition.innerHTML = pageTransitionMarkup;
+  if (reducePageMotion || skip) {
+    pageTransition.classList.add("is-logo-sequence", "is-entered", "is-skipped");
     return;
   }
-
-  window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
-    pageIntroTimeout = window.setTimeout(() => {
-      pageTransition.classList.add("is-entered");
-      pageIntroTimeout = null;
-    }, 1040);
-  }));
+  const stillCurrent = () => run === transitionRun;
+  if (leaving) {
+    // Flush the off-screen start before lowering the existing transition curtain.
+    pageTransition.getBoundingClientRect();
+    pageTransition.classList.add("is-covering");
+    await transitionWait(420);
+    if (!stillCurrent()) return;
+  }
+  const route = window.TOJDORON_ROUTE;
+  const ready = route && await Promise.race([
+    route.preload().then(() => true, () => false),
+    transitionWait(900).then(() => false)
+  ]);
+  if (!stillCurrent()) return;
+  if (ready) {
+    const canvas = pageTransition.querySelector("canvas");
+    route.draw(canvas, 0);
+    pageTransition.classList.add("is-route-playing");
+    const finished = await route.play(canvas);
+    if (!stillCurrent() || !finished) return;
+    pageTransition.classList.add("is-route-finished");
+    await transitionWait(160);
+    if (!stillCurrent()) return;
+  }
+  // Original logo animations start together; their keyframes and delays are untouched.
+  pageTransition.classList.add("is-logo-sequence");
+  await transitionWait(logoIntroDuration);
+  if (!stillCurrent()) return;
+  if (destination) {
+    try { window.sessionStorage.setItem("tojdoron-page-transition", "pending"); } catch {}
+    window.location.href = destination;
+  } else {
+    pageTransition.classList.add("is-entered");
+  }
 };
 
+const startPageIntro = (skipIntro = false) => playPageTransition({ skip: skipIntro });
 startPageIntro(skipPageIntro);
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -582,8 +610,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("pageshow", (event) => {
     if (!event.persisted) return;
-    if (navigationTimeout) window.clearTimeout(navigationTimeout);
-    navigationTimeout = null;
     navigationInProgress = false;
     try { window.sessionStorage.removeItem("tojdoron-page-transition"); } catch {}
     startPageIntro();
@@ -609,13 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    try { window.sessionStorage.setItem("tojdoron-page-transition", "pending"); } catch {}
-    pageTransition.className = "page-transition is-leaving";
-    window.requestAnimationFrame(() => pageTransition.classList.add("is-covering"));
-    navigationTimeout = window.setTimeout(() => {
-      window.location.href = destination.href;
-      navigationTimeout = null;
-    }, 1000);
+    playPageTransition({ leaving: true, destination: destination.href });
   });
 
   if (reduceMotion || !("IntersectionObserver" in window)) {
